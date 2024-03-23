@@ -1,0 +1,2 @@
+LEARNING = chr(30)
+LEARNING_ASK_AI, LEARNING_SEARCH = map(chr, range(300, 302))
