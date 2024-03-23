@@ -640,7 +640,7 @@ def main() -> None:
     learn_conv_handler = ConversationHandler(
         entry_points=[CallbackQueryHandler(select_learning_action, pattern="^" + str(LEARNING) + "$")],
         states={
-            TASKS_AND_PRS: [
+            LEARNING: [
                 CallbackQueryHandler(search_the_web, pattern="^" + str(LEARNING_SEARCH) + "$"),
                 CallbackQueryHandler(ask_ai, pattern="^" + str(LEARNING_ASK_AI) + "$"),
             ],
@@ -663,7 +663,7 @@ def main() -> None:
     fun_conv_handler = ConversationHandler(
         entry_points=[CallbackQueryHandler(select_fun_action, pattern="^" + str(FUN) + "$")],
         states={
-            TASKS_AND_PRS: [
+            FUN: [
                 CallbackQueryHandler(send_programming_meme, pattern="^" + str(FUN_MEME) + "$"),
                 CallbackQueryHandler(send_joke, pattern="^" + str(FUN_JOKE) + "$"),
             ],
@@ -686,7 +686,7 @@ def main() -> None:
     calendar_conv_handler = ConversationHandler(
         entry_points=[CallbackQueryHandler(select_calendar_action, pattern="^" + str(CALENDAR) + "$")],
         states={
-            TASKS_AND_PRS: [
+            CALENDAR: [
                 CallbackQueryHandler(schedule_meeting, pattern="^" + str(CALENDAR_SET_MEETING) + "$"),
                 CallbackQueryHandler(schedule_off_time, pattern="^" + str(CALENDAR_SET_OFF_TIME) + "$"),
                 CallbackQueryHandler(show_calendar, pattern="^" + str(CALENDAR_SHOW_SCHEDULE) + "$"),
