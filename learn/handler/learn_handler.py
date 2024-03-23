@@ -307,6 +307,13 @@ async def finish_pull_request(update: Update, context: ContextTypes.DEFAULT_TYPE
     return END
 
 
+async def show_pull_requests(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.callback_query.answer()
+    await update.callback_query.edit_message_text(text='This is the pull requests info')
+
+    return END
+
+
 async def select_learning_action(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Choose to search on the web or ask AI LLM tools."""
     text = 'Do you want to search on the web or ask an AI model?'
@@ -612,6 +619,77 @@ def main() -> None:
                 CallbackQueryHandler(add_new_pull_request, pattern="^" + str(TASKS_AND_PRS_REVIEW_REQ) + "$"),
                 CallbackQueryHandler(reject_pull_request, pattern="^" + str(TASKS_AND_PRS_REJECT_REVIEW) + "$"),
                 CallbackQueryHandler(finish_pull_request, pattern="^" + str(TASKS_AND_PRS_FINISH_REV) + "$"),
+                CallbackQueryHandler(finish_pull_request, pattern="^" + str(TASKS_AND_PRS_SHOW_PRS) + "$"),
+            ],
+        },
+        fallbacks=[
+            # CallbackQueryHandler(show_data, pattern="^" + str(SHOWING) + "$"),
+            # CallbackQueryHandler(end_second_level, pattern="^" + str(END) + "$"),
+            CommandHandler("stop", stop_nested),
+        ],
+        map_to_parent={
+            # After showing data return to top level menu
+            # SHOWING: SHOWING,
+            # Return to top level menu
+            END: SELECTING_ACTION,
+            # End conversation altogether
+            STOPPING: END,
+        },
+    )
+
+    learn_conv_handler = ConversationHandler(
+        entry_points=[CallbackQueryHandler(select_learning_action, pattern="^" + str(LEARNING) + "$")],
+        states={
+            TASKS_AND_PRS: [
+                CallbackQueryHandler(search_the_web, pattern="^" + str(LEARNING_SEARCH) + "$"),
+                CallbackQueryHandler(ask_ai, pattern="^" + str(LEARNING_ASK_AI) + "$"),
+            ],
+        },
+        fallbacks=[
+            # CallbackQueryHandler(show_data, pattern="^" + str(SHOWING) + "$"),
+            # CallbackQueryHandler(end_second_level, pattern="^" + str(END) + "$"),
+            CommandHandler("stop", stop_nested),
+        ],
+        map_to_parent={
+            # After showing data return to top level menu
+            # SHOWING: SHOWING,
+            # Return to top level menu
+            END: SELECTING_ACTION,
+            # End conversation altogether
+            STOPPING: END,
+        },
+    )
+
+    fun_conv_handler = ConversationHandler(
+        entry_points=[CallbackQueryHandler(select_fun_action, pattern="^" + str(FUN) + "$")],
+        states={
+            TASKS_AND_PRS: [
+                CallbackQueryHandler(send_programming_meme, pattern="^" + str(FUN_MEME) + "$"),
+                CallbackQueryHandler(send_joke, pattern="^" + str(FUN_JOKE) + "$"),
+            ],
+        },
+        fallbacks=[
+            # CallbackQueryHandler(show_data, pattern="^" + str(SHOWING) + "$"),
+            # CallbackQueryHandler(end_second_level, pattern="^" + str(END) + "$"),
+            CommandHandler("stop", stop_nested),
+        ],
+        map_to_parent={
+            # After showing data return to top level menu
+            # SHOWING: SHOWING,
+            # Return to top level menu
+            END: SELECTING_ACTION,
+            # End conversation altogether
+            STOPPING: END,
+        },
+    )
+
+    calendar_conv_handler = ConversationHandler(
+        entry_points=[CallbackQueryHandler(select_calendar_action, pattern="^" + str(CALENDAR) + "$")],
+        states={
+            TASKS_AND_PRS: [
+                CallbackQueryHandler(schedule_meeting, pattern="^" + str(CALENDAR_SET_MEETING) + "$"),
+                CallbackQueryHandler(schedule_off_time, pattern="^" + str(CALENDAR_SET_OFF_TIME) + "$"),
+                CallbackQueryHandler(show_calendar, pattern="^" + str(CALENDAR_SHOW_SCHEDULE) + "$"),
             ],
         },
         fallbacks=[
@@ -635,9 +713,9 @@ def main() -> None:
     module_handlers = [
         organization_conv_handler,
         tasks_and_prs_conv_handler,
-        # learn_conv_handler,
-        # fun_conv_handler,
-        # calendar_conv_handler,
+        learn_conv_handler,
+        fun_conv_handler,
+        calendar_conv_handler,
         # add_member_conv,
         # CallbackQueryHandler(show_data, pattern="^" + str(SHOWING) + "$"),
         # CallbackQueryHandler(adding_self, pattern="^" + str(ADDING_SELF) + "$"),
