@@ -606,7 +606,7 @@ def main() -> None:
     )
 
     tasks_and_prs_conv_handler = ConversationHandler(
-        entry_points=[CallbackQueryHandler(select_task_and_prs_action(), pattern="^" + str(TASKS_AND_PRS) + "$")],
+        entry_points=[CallbackQueryHandler(select_task_and_prs_action, pattern="^" + str(TASKS_AND_PRS) + "$")],
         states={
             TASKS_AND_PRS: [
                 CallbackQueryHandler(add_new_pull_request, pattern=f"^{PARENTS}$|^{CHILDREN}$"),
