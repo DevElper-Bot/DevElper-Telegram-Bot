@@ -584,12 +584,12 @@ def main() -> None:
         entry_points=[CallbackQueryHandler(select_organization_action, pattern="^" + str(ORGANIZATION) + "$")],
         states={
             ORGANIZATION: [
-                CallbackQueryHandler(add_new_organization, pattern=f"^{PARENTS}$|^{CHILDREN}$"),
-                CallbackQueryHandler(add_new_team, pattern=f"^{PARENTS}$|^{CHILDREN}$"),
-                CallbackQueryHandler(add_member, pattern=f"^{PARENTS}$|^{CHILDREN}$"),
-                CallbackQueryHandler(show_organization, pattern=f"^{PARENTS}$|^{CHILDREN}$"),
-                CallbackQueryHandler(show_teams, pattern=f"^{PARENTS}$|^{CHILDREN}$"),
-                CallbackQueryHandler(show_members, pattern=f"^{PARENTS}$|^{CHILDREN}$"),
+                CallbackQueryHandler(add_new_organization, pattern="^" + str(ORGANIZATION_ADD_ORG) + "$"),
+                CallbackQueryHandler(add_new_team, pattern="^" + str(ORGANIZATION) + "$"),
+                CallbackQueryHandler(add_member, pattern="^" + str(ORGANIZATION) + "$"),
+                CallbackQueryHandler(show_organization, pattern="^" + str(ORGANIZATION) + "$"),
+                CallbackQueryHandler(show_teams, pattern="^" + str(ORGANIZATION) + "$"),
+                CallbackQueryHandler(show_members, pattern="^" + str(ORGANIZATION) + "$"),
             ],
         },
         fallbacks=[
@@ -609,9 +609,9 @@ def main() -> None:
         entry_points=[CallbackQueryHandler(select_task_and_prs_action, pattern="^" + str(TASKS_AND_PRS) + "$")],
         states={
             TASKS_AND_PRS: [
-                CallbackQueryHandler(add_new_pull_request, pattern=f"^{PARENTS}$|^{CHILDREN}$"),
-                CallbackQueryHandler(reject_pull_request, pattern=f"^{PARENTS}$|^{CHILDREN}$"),
-                CallbackQueryHandler(finish_pull_request, pattern=f"^{PARENTS}$|^{CHILDREN}$"),
+                CallbackQueryHandler(add_new_pull_request, pattern="^" + str(TASKS_AND_PRS_REVIEW_REQ) + "$"),
+                CallbackQueryHandler(reject_pull_request, pattern="^" + str(TASKS_AND_PRS_REJECT_REVIEW) + "$"),
+                CallbackQueryHandler(finish_pull_request, pattern="^" + str(TASKS_AND_PRS_FINISH_REV) + "$"),
             ],
         },
         fallbacks=[
