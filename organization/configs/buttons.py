@@ -3,6 +3,8 @@ from telegram import InlineKeyboardButton
 from general.configs.states import END
 from organization.configs.states import *
 
+ORGANIZATION_BUTTON = InlineKeyboardButton(text='Organization', callback_data=str(ORGANIZATION))
+
 ADD_ORG_BUTTON = InlineKeyboardButton(text='Add new organization', callback_data=str(ORGANIZATION_ADD_ORG))
 ADD_TEAM_BUTTON = InlineKeyboardButton(text='Add new team', callback_data=str(ORGANIZATION_ADD_TEAM))
 ADD_MEMBER_BUTTON = InlineKeyboardButton(text='Add member', callback_data=str(ORGANIZATION_ADD_MEMBER))

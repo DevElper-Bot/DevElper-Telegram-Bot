@@ -1,7 +1,9 @@
 from telegram import InlineKeyboardButton
 
-from work_calendar.configs.states import CALENDAR_SET_MEETING, CALENDAR_SET_OFF_TIME, CALENDAR_SHOW_SCHEDULE
+from work_calendar.configs.states import *
 from general.configs.states import END
+
+CALENDAR_BUTTON = InlineKeyboardButton(text='Calendar', callback_data=str(CALENDAR))
 
 SET_MEETING_BUTTON = InlineKeyboardButton(text='Schedule a meeting', callback_data=str(CALENDAR_SET_MEETING))
 SET_OFF_TIME_BUTTON = InlineKeyboardButton(text='Schedule off-time', callback_data=str(CALENDAR_SET_OFF_TIME))

@@ -1,26 +1,32 @@
-from telegram import Update
+from telegram import Update, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
+
+from general.configs.messages import SELECT_ACTION_TEXT, GREETING_TEXT
+from general.configs.states import START_OVER, SELECTING_ACTION
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     """Select an action: Adding parent/child or show data."""
-    text = (
-        'You may choose to follow with the matters related to the organization, tasks and PRs, learning, fun, '
-        'or calendar. To abort, simply type /stop.'
-    )
+
+    from organization.configs.buttons import ORGANIZATION_BUTTON
+    from tasks_and_prs.configs.buttons import TASKS_AND_PRS_BUTTON
+    from learn.configs.buttons import LEARNING_BUTTON
+    from fun.configs.buttons import FUN_BUTTON
+    from work_calendar.configs.buttons import CALENDAR_BUTTON
+    from general.configs.buttons import END_BUTTON
 
     buttons = [
         [
-            InlineKeyboardButton(text='Organization', callback_data=str(ORGANIZATION)),
-            InlineKeyboardButton(text='Tasks and PRs', callback_data=str(TASKS_AND_PRS)),
+            ORGANIZATION_BUTTON,
+            TASKS_AND_PRS_BUTTON,
         ],
         [
             LEARNING_BUTTON,
-            InlineKeyboardButton(text='Fun', callback_data=str(FUN)),
+            FUN_BUTTON,
         ],
         [
-            InlineKeyboardButton(text='Calendar', callback_data=str(CALENDAR)),
-            InlineKeyboardButton(text='Done', callback_data=str(END)),
+            CALENDAR_BUTTON,
+            END_BUTTON,
         ],
     ]
     keyboard = InlineKeyboardMarkup(buttons)
@@ -28,12 +34,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     # If we're starting over we don't need to send a new message
     if context.user_data.get(START_OVER):
         await update.callback_query.answer()
-        await update.callback_query.edit_message_text(text=text, reply_markup=keyboard)
+        await update.callback_query.edit_message_text(text=SELECT_ACTION_TEXT, reply_markup=keyboard)
     else:
-        await update.message.reply_text(
-            "Hi, I'm Developer Helper Bot and I'm here to help you with all your developer needs."
-        )
-        await update.message.reply_text(text=text, reply_markup=keyboard)
+        await update.message.reply_text(GREETING_TEXT)
+        await update.message.reply_text(text=SELECT_ACTION_TEXT, reply_markup=keyboard)
 
     context.user_data[START_OVER] = False
     return SELECTING_ACTION
